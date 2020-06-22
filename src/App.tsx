@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout, { SideMenu, Content } from "./Layout";
-import AllEntries from "./components/entries/AllEntries";
+import ListEntries from "./components/menu/ListEntries";
 import EntryDescription from "./components/entry-description/EntryDescription";
 import { RedditEntry } from "./models/Reddit.model";
 
@@ -10,7 +10,7 @@ function App() {
     <Layout>
       <>
         <SideMenu>
-          <AllEntries onSelectEntry={setEntry} />
+          <ListEntries onSelectEntry={setEntry} />
         </SideMenu>
         <Content>
           <EntryDescription entry={entry} />
