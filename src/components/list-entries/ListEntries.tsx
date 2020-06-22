@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import redditService from "../../services/reddit.services";
 import { RedditEntry } from "../../models/Reddit.model";
-import Item from './EntryItem';
-import * as Styled from './menu.styled';
+import Item from '../entry-item/EntryItem';
+import * as Styled from './ListEntries.styled';
 
 const ListEntries = ({ onSelectEntry }: { onSelectEntry: (entry: RedditEntry) => void }) => {
   const [entries, setEntries] = useState<RedditEntry[]>([]);

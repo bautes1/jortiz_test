@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Layout, { SideMenu, Content } from "./Layout";
-import ListEntries from "./components/menu/ListEntries";
+import Layout from "./layout/Layout";
+import { SideMenu, Content } from './layout/Layout.styled';
+import ListEntries from "./components/list-entries/ListEntries";
 import EntryDescription from "./components/entry-description/EntryDescription";
 import { RedditEntry } from "./models/Reddit.model";
 
