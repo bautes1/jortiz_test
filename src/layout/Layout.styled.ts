@@ -8,7 +8,9 @@ export const Layout = styled.div`
 `;
 
 export const SideMenu = styled.div`
-  flex: 3;
+  @media ${device.M} {
+    flex: 1;
+  }
 `;
 
 export const Content = styled.div`

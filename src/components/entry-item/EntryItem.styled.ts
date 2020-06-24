@@ -43,6 +43,7 @@ export const Name = styled.h5`
 
 export const Small = styled.small`
   display: block;
+  margin-top: 5px;
   white-space: nowrap;
 `;
 

@@ -1,14 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import * as Styled from './EntryDescription.styled';
 import { RedditEntry } from "../../models/Reddit.model";
 
-const Title = styled.h3``;
-
-
 const EntryDescription = ({ entry }: { entry?: RedditEntry }) => {
-  return <div>
-    <Title>{entry?.getTitle()}</Title>
-  </div>;
+  return (
+    <Styled.Wrapper>
+      <Styled.Title>{entry?.getTitle()}</Styled.Title>
+      <ImageSlider images={entry?.getImages()} />
+    </Styled.Wrapper>
+  );
 };
 
 export default EntryDescription;

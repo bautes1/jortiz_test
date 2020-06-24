@@ -7,10 +7,11 @@ export const ICONS = {
 
 interface Props {
   className?: string;
+  onClick?: () => void;
 }
 
-const Icon = ({className, icon}: Props & {icon: string}) => <SVG className={className} src={require(`./svgs/${icon}`)} />;
+const Icon = ({icon, ...props}: Props & {icon: string}) => <SVG src={require(`./svgs/${icon}`)} {...props} />;
 
-export const DeleteIcon = ({ className }: Props) => <Icon className={className} icon={ICONS.DELETE_ICON} />
+export const DeleteIcon = (props: Props) => <Icon icon={ICONS.DELETE_ICON} {...props} />
 
 export default Icon;

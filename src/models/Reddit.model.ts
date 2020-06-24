@@ -10,6 +10,7 @@ import {
 
 export class RedditEntry extends BaseModel {
   response?: RedditEntryInterface;
+  dismissed: boolean = false;
 
   getTitle(): string {
     return this.response?.title || "";
@@ -37,6 +38,15 @@ export class RedditEntry extends BaseModel {
   getNumberOfComments(): number {
     return this.response?.num_comments || 0;
   }
+
+  notDismissed(): boolean {
+    return !this.dismissed;
+  }
+
+  setDismissed(isDismissed: boolean): RedditEntry {
+    this.dismissed = isDismissed;
+    return this;
+  }
 }
 
 export class RedditModel {
@@ -46,7 +56,7 @@ export class RedditModel {
     return Object.assign(new this(), {
       entries:
         json.data?.children?.map((c: RedditEntryDataInterface) =>
-          RedditEntry.fromJSON(c.data)
+          RedditEntry.fromJSON({response: c.data, dismissed: false})
         ) || [],
     });
   }

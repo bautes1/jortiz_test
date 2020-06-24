@@ -3,11 +3,17 @@ import { RedditResponseInterface } from "../models/responses/RedditResponse.mode
 import { RedditModel } from "../models/Reddit.model";
 
 export const URLS = {
-  get: 'https://www.reddit.com/top/.json'
-}
+  get: "https://www.reddit.com/top/.json",
+};
 
-const getFromReddit = async (limit: number = 50) => {
-  const url = `${URLS.get}?count=${limit}`;
+const LIMIT = 10;
+
+const getFromReddit = async (
+  after?: string,
+) => {
+  const dataParams = Object.assign({}, { limit: `${LIMIT}`, after: after ? `t3_${after}` : '' });
+  const params = new URLSearchParams(dataParams);
+  const url = `${URLS.get}?${params}`;
   const response = await axios.get<RedditResponseInterface>(url);
   return RedditModel.fromJSON(response?.data);
 };
