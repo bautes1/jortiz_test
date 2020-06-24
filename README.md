@@ -11,8 +11,10 @@
 Holds common components that will be reused and could be candidates for being moved to a library
 
 ### models 
-Holds the serices response interfaces and the models to be used across the site.
+Holds the services response interfaces and the models to be used across the site.
 
 ### services
-Holds the AJAX request/response and instantiate a model 
+Holds the AJAX request/response and returns an instantiated model 
+
+### hooks
 

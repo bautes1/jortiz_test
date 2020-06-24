@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import redditService from "../../services/reddit.services";
 import { RedditEntry } from "../../models/Reddit.model";
 import Item from "../entry-item/EntryItem";
 import useLocalStorage from "../../hooks/useStorage";
+import useScrollAtBottom from "../../hooks/useScrollAtBottom";
 
 import * as Styled from "./EntryTiles.styled";
 
@@ -11,16 +12,28 @@ const EntryTiles = ({
 }: {
   onSelectEntry: (entry: RedditEntry) => void;
 }) => {
+  const isBottomReached = useScrollAtBottom();
   const [entries, setEntries] = useLocalStorage([]);
+  const [lastEntry, setLastEntry] = useState<RedditEntry>();
+
+  useEffect(() => {
+    const fetchMoreEntries = async (id: string) => {
+      const data = await redditService.get(id);
+      setLastEntry(data.entries.slice(-1)[0]);
+      setEntries(entries.concat(data?.entries || []));
+    };
+
+    if (isBottomReached) fetchMoreEntries(lastEntry?.getId() || "");
+  }, [isBottomReached, entries, setLastEntry, lastEntry, setEntries]);
 
   useEffect(() => {
     const fetchEntries = async () => {
       const data = await redditService.get();
-      // @ts-ignore
+      setLastEntry(data.entries.slice(-1)[0]);
       setEntries(data?.entries || []);
     };
     if (!entries.length) fetchEntries();
-  }, [entries, setEntries]);
+  }, [entries.length, setEntries, setLastEntry]);
 
   const handleSelectedEntry = (entry: RedditEntry) => {
     const idx = entries.findIndex((i) => i.response?.id === entry.response?.id);
@@ -39,20 +52,6 @@ const EntryTiles = ({
     setEntries(copiedEntries);
   };
 
-  const handleNextPage = () => {
-    const fetchMoreEntries = async (lastId?: string) => {
-      const data = await redditService.get(lastId);
-      // @ts-ignore
-      setEntries(entries.concat(data?.entries || []));
-    };
-    const lastEntry = entries.slice(-1)[0];
-    fetchMoreEntries(lastEntry?.response?.id);
-  };
-
-  const handleRemoveAll = () => {
-    setEntries([]);
-  };
-
   return (
     <>
       <Styled.List>
@@ -68,8 +67,9 @@ const EntryTiles = ({
             />
           ))}
       </Styled.List>
-      <Styled.Bottom role="link" onClick={handleRemoveAll}>Dismiss All</Styled.Bottom>
-      <span onClick={handleNextPage}>next 10</span>
+      <Styled.Bottom role="link" onClick={() => setEntries([])}>
+        Dismiss All
+      </Styled.Bottom>
     </>
   );
 };

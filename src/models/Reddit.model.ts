@@ -13,6 +13,10 @@ export class RedditEntry extends BaseModel {
   dismissed: boolean = false;
   alreadyseen: boolean = false;
 
+  getId(): string {
+    return this.response?.id || "";
+  }
+
   getTitle(): string {
     return this.response?.title || "";
   }
