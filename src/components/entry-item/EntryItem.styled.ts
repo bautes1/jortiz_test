@@ -1,12 +1,6 @@
 import styled, { css } from "styled-components";
+import { animation, removeItem, disabledItem } from "./animation";
 import BaseImage from "../image/Image";
-
-const selectedItem = css`
-`;
-
-const disabledItem = css`
-  opacity: 0.5;
-`;
 
 const blueBullet = css`
   content: "";
@@ -34,18 +28,17 @@ const rigthArrow = css`
 `;
 
 export const Wrapper = styled.div`
-  border-bottom: 1px solid rgba(777,777,777,.5);
+  border-bottom: 1px solid rgba(777, 777, 777, 0.5);
 `;
 
-export const ListItem = styled.li<{ selected?: boolean; disabled?: boolean }>`
+export const ListItem = styled.li<{ disabled?: boolean; dismissed?: boolean }>`
   --bullet-color: ${(props) => (props.disabled ? "transparent" : "blue")};
+  ${animation};
+
   padding: 0.25rem 0.5rem;
   cursor: default;
-  &:hover {
-    ${selectedItem};
-  }
-  ${(props) => props.selected && selectedItem}
-  ${(props) => props.disabled && disabledItem}
+  ${(props) => props.disabled && disabledItem};
+  ${(props) => props.dismissed && removeItem};
 `;
 
 export const Description = styled.div`

@@ -1,4 +1,4 @@
-import React, { MouseEvent } from "react";
+import React, { MouseEvent, useState } from "react";
 import { RedditEntry } from "../../models/Reddit.model";
 import * as Styled from "./EntryItem.styled";
 
@@ -10,12 +10,14 @@ interface Props {
 }
 
 const Item = ({ entry, onClick, onDismiss, disabled }: Props) => {
+  const [dismissed, setDismissed] = useState(false);
   const handleDismiss = (ev: MouseEvent<HTMLSpanElement>) => {
     ev.stopPropagation();
-    onDismiss();
+    setDismissed(true);
+    setTimeout(onDismiss, 1000);
   };
   return (
-    <Styled.ListItem disabled={disabled} onClick={onClick}>
+    <Styled.ListItem disabled={disabled} dismissed={dismissed} onClick={onClick}>
       <Styled.Wrapper>
         <Styled.Name>
           {entry.response?.author_fullname}

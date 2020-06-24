@@ -32,7 +32,7 @@ export class RedditEntry extends BaseModel {
   }
 
   getImages(): RedditImageInterface[] {
-    return this.response?.preview.images || [];
+    return this.response?.preview?.images || [];
   }
 
   getTimePassed(): string {
