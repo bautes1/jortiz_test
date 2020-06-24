@@ -22,11 +22,20 @@ const EntryTiles = ({
     if (!entries.length) fetchEntries();
   }, [entries, setEntries]);
 
+  const handleSelectedEntry = (entry: RedditEntry) => {
+    const idx = entries.findIndex((i) => i.response?.id === entry.response?.id);
+    if (idx === -1) return;
+    const copiedEntries = entries.slice();
+    copiedEntries.splice(idx, 1, entry.setSeen());
+    setEntries(copiedEntries);
+    onSelectEntry(entry);
+  };
+
   const handleDismiss = (entry: RedditEntry) => {
     const idx = entries.findIndex((i) => i.response?.id === entry.response?.id);
     if (idx === -1) return;
     const copiedEntries = entries.slice();
-    copiedEntries.splice(idx, 1, entry.setDismissed(true))
+    copiedEntries.splice(idx, 1, entry.setDismissed(true));
     setEntries(copiedEntries);
   };
 
@@ -40,6 +49,10 @@ const EntryTiles = ({
     fetchMoreEntries(lastEntry?.response?.id);
   };
 
+  const handleRemoveAll = () => {
+    setEntries([]);
+  };
+
   return (
     <>
       <Styled.List>
@@ -49,12 +62,14 @@ const EntryTiles = ({
             <Item
               key={idx}
               entry={entry}
-              onClick={() => onSelectEntry(entry)}
+              disabled={entry.alreadyseen}
+              onClick={() => handleSelectedEntry(entry)}
               onDismiss={() => handleDismiss(entry)}
             />
           ))}
       </Styled.List>
-      <div onClick={handleNextPage}>next 10</div>
+      <Styled.Bottom role="link" onClick={handleRemoveAll}>Dismiss All</Styled.Bottom>
+      <span onClick={handleNextPage}>next 10</span>
     </>
   );
 };

@@ -1,10 +1,14 @@
 import React from "react";
-import * as Styled from "./Image.styled";
 import { RedditImageSourceInterface } from "../../models/responses/RedditResponse.model";
 
-const Image = ({ srcImage }: { srcImage?: RedditImageSourceInterface }) => {
-  const src = srcImage?.url;
-  return src ? <Styled.Image alt={src} src={src} /> : null;
+interface Props {
+  srcImage?: RedditImageSourceInterface;
+  className?: string;
+}
+
+const Image = ({ srcImage, className }: Props) => {
+  const src = (srcImage?.url || "").replace(/&amp;/g, "&");
+  return src ? <img className={className} alt={src} src={src} /> : null;
 };
 
 export default Image;

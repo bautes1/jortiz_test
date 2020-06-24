@@ -1,61 +1,113 @@
 import styled, { css } from "styled-components";
-import { device } from "../../utils/media";
-import { DeleteIcon } from "../icons/Icon";
+import BaseImage from "../image/Image";
 
 const selectedItem = css`
-  background: #eee;
 `;
 
-export const ListItem = styled.li<{ selected?: boolean }>`
-  padding: 0.9em 1em;
-  border-bottom: 1px solid #ddd;
-  border-left: 6px solid transparent;
+const disabledItem = css`
+  opacity: 0.5;
+`;
+
+const blueBullet = css`
+  content: "";
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  background-color: var(--bullet-color);
+  display: inline-block;
+  margin-right: 10px;
+`;
+
+const rigthArrow = css`
+  content: "";
+  border: solid white;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 0;
+  transform: rotate(-45deg);
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  margin: auto 0;
+  margin-left: auto;
+  margin-right: 10px;
+`;
+
+export const Wrapper = styled.div`
+  border-bottom: 1px solid rgba(777,777,777,.5);
+`;
+
+export const ListItem = styled.li<{ selected?: boolean; disabled?: boolean }>`
+  --bullet-color: ${(props) => (props.disabled ? "transparent" : "blue")};
+  padding: 0.25rem 0.5rem;
+  cursor: default;
   &:hover {
     ${selectedItem};
   }
   ${(props) => props.selected && selectedItem}
-
-  @media ${device.S} { 
-    display: flex;
-  }
+  ${(props) => props.disabled && disabledItem}
 `;
 
 export const Description = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 10px;
+  &:after {
+    ${rigthArrow};
+  }
 `;
 
 export const Subject = styled.h4`
   margin: 0;
 `;
 
-export const Name = styled.h5`
-  cursor: pointer;
-  text-transform: uppercase;
-  color: #999;
-  margin: 0;
-  &:hover {
-    text-decoration: none;
+export const Name = styled.h4`
+  &:before {
+    ${blueBullet};
+  }
+  margin: 0 0 10px;
+  font-weight: normal;
+  small {
+    padding-left: 10px;
   }
 `;
 
-export const Small = styled.small`
-  display: block;
-  margin-top: 5px;
+export const Title = styled.small`
+  padding-left: 10px;
+  margin: auto 0;
+`;
+
+export const Footer = styled.small`
+  color: darkgoldenrod;
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0 5px;
   white-space: nowrap;
 `;
 
-export const Title = styled.strong`
-  &:hover {
-    text-decoration: underline;
-  }
+export const Comments = styled.span`
+  padding-right: 20px;
 `;
 
-export const DelIcon = styled(DeleteIcon)`
+export const DeleteLink = styled.span`
   cursor: pointer;
-  max-width: 20px;
-  vertical-align: middle;
-  margin: 0 5px;
+  color: white;
+`;
+
+export const DeleteIcon = styled.span`
+  &:before {
+    content: "X";
+    color: darkgoldenrod;
+    border: 2px solid darkgoldenrod;
+    border-radius: 100%;
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+  }
+  text-align: center;
+  font-weight: bold;
+  display: inline-flex;
+`;
+
+export const Image = styled(BaseImage)`
+  display: block;
+  max-width: 70px;
 `;

@@ -11,6 +11,7 @@ import {
 export class RedditEntry extends BaseModel {
   response?: RedditEntryInterface;
   dismissed: boolean = false;
+  alreadyseen: boolean = false;
 
   getTitle(): string {
     return this.response?.title || "";
@@ -32,7 +33,7 @@ export class RedditEntry extends BaseModel {
 
   getTimePassed(): string {
     if (!this.response) return "";
-    return formatDistanceToNow(fromUnixTime(this.response.created_utc));
+    return formatDistanceToNow(fromUnixTime(this.response.created_utc)).replace(/^\w*/, "");
   }
 
   getNumberOfComments(): number {
@@ -45,6 +46,11 @@ export class RedditEntry extends BaseModel {
 
   setDismissed(isDismissed: boolean): RedditEntry {
     this.dismissed = isDismissed;
+    return this;
+  }
+
+  setSeen(): RedditEntry {
+    this.alreadyseen = true;
     return this;
   }
 }

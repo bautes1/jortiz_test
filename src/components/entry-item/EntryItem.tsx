@@ -1,30 +1,41 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { RedditEntry } from "../../models/Reddit.model";
-import Image from "../image/Image";
 import * as Styled from "./EntryItem.styled";
 
-const Item = ({
-  entry,
-  onClick,
-  onDismiss
-}: {
+interface Props {
+  disabled?: boolean;
   entry: RedditEntry;
   onClick: () => void;
   onDismiss: () => void;
-}) => (
-  <Styled.ListItem>
-    <Image srcImage={entry.getDefaultImage()} />
-    <Styled.Description>
-      <Styled.Title onClick={onClick}>
-        {entry.getTitle()}
-        <Styled.Name>{entry.response?.author_fullname}</Styled.Name>
-      </Styled.Title>
-      <Styled.Small>
-        <Styled.DelIcon onClick={onDismiss} />
-        {entry.getTimePassed()} ago - {entry.getNumberOfComments()} comments
-      </Styled.Small>
-    </Styled.Description>
-  </Styled.ListItem>
-);
+}
+
+const Item = ({ entry, onClick, onDismiss, disabled }: Props) => {
+  const handleDismiss = (ev: MouseEvent<HTMLSpanElement>) => {
+    ev.stopPropagation();
+    onDismiss();
+  };
+  return (
+    <Styled.ListItem disabled={disabled} onClick={onClick}>
+      <Styled.Wrapper>
+        <Styled.Name>
+          {entry.response?.author_fullname}
+          <small>{entry.getTimePassed()} ago</small>
+        </Styled.Name>
+        <Styled.Description>
+          <Styled.Image srcImage={entry.getDefaultImage()} />
+          <Styled.Title>{entry.getTitle()}</Styled.Title>
+        </Styled.Description>
+        <Styled.Footer>
+          <Styled.DeleteLink role="link" onClick={handleDismiss}>
+            <Styled.DeleteIcon /> Dismiss Post
+          </Styled.DeleteLink>
+          <Styled.Comments>
+            {entry.getNumberOfComments()} comments
+          </Styled.Comments>
+        </Styled.Footer>
+      </Styled.Wrapper>
+    </Styled.ListItem>
+  );
+};
 
 export default Item;
